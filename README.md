@@ -1,11 +1,4 @@
-VERIGUARD
-AI-Based Fake Identity & Document Screening System
-SIH Problem Statement: SIH26188  
-Domain: Artificial Intelligence, Computer Vision, Document Security, Cybersecurity  
-Platform: Web Application  
-Primary Database: MongoDB  
-Frontend: React + Vite  
-Backend: FastAPI + Python
+
 ---
 1. Project Overview
 VERIGUARD is an AI-assisted web-based document and identity screening system designed to help security or screening officers analyze identity documents in a faster, more standardized, and more auditable way.
