@@ -1,400 +1,103 @@
-<!--
-VERIGUARD — Single-file GitHub README
-Everything below is intentionally self-contained: no local docs/assets folder is required.
-Visual architecture/workflow diagrams use Mermaid, which GitHub renders directly.
-<p align="center">
-🛡️ VERIGUARD
-AI-Based Fake Identity & Document Screening System
-SIH26188 • Smart India Hackathon
-<br/>
-<img src="https://img.shields.io/badge/SIH-26188-0b74de?style=for-the-badge&labelColor=050b16" />
-<img src="https://img.shields.io/badge/React-Vite-38bdf8?style=for-the-badge&labelColor=050b16" />
-<img src="https://img.shields.io/badge/FastAPI-Python-22c55e?style=for-the-badge&labelColor=050b16" />
-<img src="https://img.shields.io/badge/MongoDB-Database-10b981?style=for-the-badge&labelColor=050b16" />
-<img src="https://img.shields.io/badge/OpenCV-YuNet%20%2B%20SFace-a78bfa?style=for-the-badge&labelColor=050b16" />
-</p>
-<p align="center">
-  <b>One secure officer console for OCR, document validation, tampering analysis, printed-face verification, explainable risk assessment and auditability.</b>
-</p>
+<p align="center"><img src="docs/assets/hero.svg" alt="VERIGUARD — AI-Based Fake Identity & Document Screening System" width="100%"/></p>
+<p align="center"><img src="https://img.shields.io/badge/Smart%20India%20Hackathon-SIH26188-0b74de?style=for-the-badge"/> <img src="https://img.shields.io/badge/Frontend-React%20%2B%20Vite-38bdf8?style=for-the-badge"/> <img src="https://img.shields.io/badge/Backend-FastAPI-22c55e?style=for-the-badge"/> <img src="https://img.shields.io/badge/Database-MongoDB-10b981?style=for-the-badge"/> <img src="https://img.shields.io/badge/Vision-OpenCV%20%2B%20YuNet%20%2B%20SFace-a78bfa?style=for-the-badge"/></p>
+<p align="center"><b>AI-assisted identity and document screening for security officers.</b><br/>OCR • document validation • tampering analysis • printed-face verification • risk assessment • audit trail</p>
 ---
-✨ Project at a Glance
-VERIGUARD is a web-based security screening prototype designed for SIH26188 — AI-Based Fake Identity & Document Screening System.
-The main idea is simple:
-> **Upload a document → extract evidence → validate it → inspect integrity → compare the person with the printed document face → calculate risk → preserve the screening trail.**
-The prototype is intentionally built as decision support for screening officers, not as a claim that AI alone can prove fraud.
-Core capabilities
-Capability	What VERIGUARD does
-🔐 Officer authentication	Pre-created officer credentials, hashed passwords, sessions and protected APIs
-📄 OCR	Tesseract-based text extraction
-🧾 Field extraction	Name, DOB, document ID/number, validity, nationality, gender and document-specific fields
-✅ Validation	Document-specific format, dates, expiry and consistency checks
-🕵️ Tampering analysis	ELA + local-region + text-region + photo-region + metadata signals
-👤 Face verification	Person photo ↔ printed face on the uploaded document
-🧠 Risk engine	Structured score, level, decision and explainable factors
-🗄️ MongoDB	Cases, officers, sessions, references, audit logs and case counters
-📜 Auditability	Officer-linked screening history and security events
-📊 Operations UI	Dashboard, screening, history, analytics, reports, settings and help
----
-🎯 SIH Problem Alignment
-The prototype is structured around identity and travel-document screening scenarios such as:
-Passport • Visa • National ID / Identity Card • Driving Licence • Permits / Other identity documents
-Problem → Solution mapping
-Screening requirement	VERIGUARD solution
-Reduce manual verification time	Automated OCR + validation + image analysis
-Detect suspicious documents	Multi-signal tampering/integrity analysis
-Standardize screening	Structured case schema + risk scoring
-Verify identity visually	YuNet face detection + SFace recognition
-Keep evidence traceable	MongoDB case records + audit logs
-Protect officer access	Authentication + sessions + protected APIs
-Produce an operational result	Risk level + decision + findings + case ID
----
-💡 Proposed Solution
-VERIGUARD separates the system into two complementary security layers.
-1. 🔐 System Security Layer
-This answers:
-> **“Who is allowed to operate the screening console?”**
-Officer accounts are pre-created in MongoDB. Passwords are stored as derived hashes, login creates an authenticated session, protected endpoints reject unauthenticated requests, logout ends access, and security/screening events can be recorded.
-2. 🔎 Evidence Screening Layer
-This answers:
-> **“What evidence does the uploaded document provide, and how suspicious is it?”**
+🛡️ What is VERIGUARD?
+VERIGUARD is a web-based prototype for the SIH26188 — AI-Based Fake Identity & Document Screening System problem statement. The system is designed around one operational goal:
+> **Turn a raw identity/travel document into a structured, explainable, officer-facing screening result.**
+The prototype brings document intelligence, computer vision, authentication and case traceability into one security-operations console.
+The core screening flow
+Document → OCR → Field extraction → Validation → Integrity/Tampering signals → Face verification → Risk assessment → Case record → Audit trail
+<img src="docs/assets/screening-pipeline.gif" alt="Animated VERIGUARD screening pipeline" width="100%"/>
+🎯 SIH problem alignment
+The solution is structured for screening of documents such as Passport, Visa, National ID / identity card, Driving Licence and permits or other identity/travel documents.
+Requirement	VERIGUARD approach
+OCR extraction	Tesseract OCR + document-specific field parsing
+Document validation	Rule-based field, date, format and document-type validation
+Forgery / tampering	Multi-signal image integrity analysis
+Face verification	YuNet detection + SFace recognition
+Risk assessment	Structured scoring with explainable factors
+Standardized screening	Consistent result schema across cases
+Digital trail	MongoDB case history + audit logs + officer identity
+Access security	Authenticated officer console + protected APIs
+💡 Proposed solution
+VERIGUARD separates the problem into two security layers.
+1. System security layer
+This protects who is allowed to operate the screening system. Officer credentials are pre-created in MongoDB; passwords are hashed; login creates a session; protected APIs reject unauthenticated requests; and screening/authentication events can be written to the audit trail.
+2. Evidence screening layer
+This evaluates what was uploaded and produces structured evidence.
 ```text
 Authenticated Officer
-        │
-        ▼
-Secure Upload
-Document + Optional Person Photo
-        │
-        ▼
+        ↓
+Secure Upload: Document + Person Photo
+        ↓
 OCR + Field Extraction
-        │
-        ▼
+        ↓
 Document Validation
-        │
-        ├──────────────► Reference Verification
-        │
-        ▼
+        ↓
 Integrity / Tampering Analysis
-        │
-        ▼
+        ↓
 Person ↔ Printed Document Face Verification
-        │
-        ▼
+        ↓
 Structured Risk Assessment
-        │
-        ▼
-Case Record + Audit Trail
+        ↓
+MongoDB Case + Audit Trail
 ```
----
-🧩 System Architecture
-```mermaid
-flowchart TB
-    A["👮 Officer"] --> B["🖥️ React + Vite Web Console"]
-    B --> C["🔐 FastAPI Security / Auth Layer"]
-    C --> D["⚙️ Screening Orchestrator"]
-
-    D --> E["🔤 Tesseract OCR"]
-    D --> F["📋 Field Extraction"]
-    D --> G["✅ Document Validation"]
-    D --> H["🕵️ Multi-Signal Tampering"]
-    D --> I["👤 YuNet + SFace Face Verification"]
-    D --> J["🧠 Structured Risk Engine"]
-
-    G --> K["🗃️ Reference Passport Data"]
-    J --> L["📦 Screening Case"]
-    C --> M["📜 Audit Log"]
-
-    K --> N[("🍃 MongoDB")]
-    L --> N
-    M --> N
-
-    style A fill:#0f172a,stroke:#38bdf8,color:#e2e8f0
-    style B fill:#111827,stroke:#38bdf8,color:#e2e8f0
-    style C fill:#111827,stroke:#22c55e,color:#e2e8f0
-    style D fill:#111827,stroke:#60a5fa,color:#e2e8f0
-    style E fill:#0b1220,stroke:#22d3ee,color:#e2e8f0
-    style F fill:#0b1220,stroke:#22d3ee,color:#e2e8f0
-    style G fill:#0b1220,stroke:#22c55e,color:#e2e8f0
-    style H fill:#0b1220,stroke:#a78bfa,color:#e2e8f0
-    style I fill:#0b1220,stroke:#38bdf8,color:#e2e8f0
-    style J fill:#0b1220,stroke:#f59e0b,color:#e2e8f0
-    style K fill:#0b1220,stroke:#94a3b8,color:#e2e8f0
-    style L fill:#0b1220,stroke:#10b981,color:#e2e8f0
-    style M fill:#0b1220,stroke:#f43f5e,color:#e2e8f0
-    style N fill:#052e2b,stroke:#10b981,color:#e2e8f0
-```
----
-🔄 End-to-End Screening Workflow
-```mermaid
-flowchart LR
-    A["📤 Upload Document"] --> B["🔤 OCR"]
-    B --> C["🧾 Field Extraction"]
-    C --> D["✅ Validation"]
-    D --> E["🕵️ Integrity / Tampering"]
-    E --> F["👤 Person Face"]
-    F --> G["🧠 Risk Engine"]
-    G --> H["📄 Result + Case ID"]
-    H --> I["🗄️ MongoDB"]
-    I --> J["📜 Audit Trail"]
-
-    style A fill:#0f172a,stroke:#38bdf8,color:#e2e8f0
-    style B fill:#0b1220,stroke:#22d3ee,color:#e2e8f0
-    style C fill:#0b1220,stroke:#22d3ee,color:#e2e8f0
-    style D fill:#0b1220,stroke:#22c55e,color:#e2e8f0
-    style E fill:#0b1220,stroke:#a78bfa,color:#e2e8f0
-    style F fill:#0b1220,stroke:#38bdf8,color:#e2e8f0
-    style G fill:#0b1220,stroke:#f59e0b,color:#e2e8f0
-    style H fill:#0b1220,stroke:#10b981,color:#e2e8f0
-    style I fill:#052e2b,stroke:#10b981,color:#e2e8f0
-    style J fill:#1f0a10,stroke:#fb7185,color:#e2e8f0
-```
----
-🔬 Core Intelligence Modules
-01 — OCR & Field Extraction
-Tesseract OCR converts the uploaded document image into text.
-The extraction layer is designed to identify:
-Full name
-Date of birth
-Document ID / document number
-Validity / expiry
-Nationality
-Gender
-Passport-specific fields
-Visa-specific fields
-The field-extraction service contains document-specific parsing helpers so that the raw OCR text can become structured JSON instead of remaining only as plain text.
-OCR output idea
-```json
-{
-  "full_name": "SHIVAM SINGH",
-  "dob": "17 Nov, 2004",
-  "document_id": "24AI0321",
-  "validity": "2024-2027",
-  "nationality": "INDIAN",
-  "gender": "M"
-}
-```
----
-02 — Document Validation
-Validation combines OCR-derived fields with document rules.
-Examples of checks:
-Document type recognition
-Number / identifier format
-Date parsing
-Future DOB detection
-Expiry state
-Start date vs end date
-Nationality / country consistency
-Required-field presence
-Document-specific patterns
-Typical validation outcomes:
-```text
-VALID
-INVALID
-EXPIRED
-NOT_YET_VALID
-REVIEW
-UNKNOWN
-```
----
-03 — Reference Database Verification
-For passport-oriented screening, the prototype supports comparison against a MongoDB reference collection.
-Possible outcomes:
-```text
-MATCH
-PARTIAL_MATCH
-MISMATCH
-NO_MATCH
-```
-The reference dataset is used as synthetic reference data for the prototype, not as proof that a real individual is genuine.
----
-04 — Tampering / Integrity Analysis
-VERIGUARD does not rely on a single ELA number.
-Instead, the prototype combines multiple signals:
-Global analysis
-Error Level Analysis (ELA)
-Overall image-quality indicators
-Local analysis
-4×4 region inspection
+🏗️ Prototype architecture
+<img src="docs/assets/architecture.svg" alt="VERIGUARD prototype architecture" width="100%"/>
+Major components
+Frontend — React + Vite: login, dashboard, screening, live camera capture, person-photo upload, results, history, analytics, reports, settings/help and dark/light UI.
+Backend — FastAPI: authentication, protected APIs, secure uploads, OCR orchestration, field extraction, validation, tampering analysis, YuNet + SFace verification, risk engine, MongoDB persistence and audit logging.
+Database — MongoDB: officer records, sessions, screening cases, reference data, audit events, dataset metadata and atomic case-ID counters.
+🔬 AI / analysis pipeline
+01 — OCR extraction
+Tesseract OCR converts the document image into machine-readable text. Document-specific parsers attempt to extract name, DOB, document ID/number, validity/expiry, nationality, gender, passport fields and visa fields.
+02 — Document validation
+The validation layer can check document type, number format, field presence, date parsing, expiry state, future DOB and nationality consistency. Visa-field checks are supported where those fields are detected.
+03 — Tampering / integrity analysis
+The prototype deliberately uses multiple signals instead of one image statistic alone:
+Global ELA
+Local 4×4 region analysis
 Laplacian / sharpness variation
 Edge-density variation
-Robust median / MAD outlier analysis
-Targeted analysis
-Text-region ELA inconsistency
-Photo-region comparison with surrounding regions
-Metadata / editing software indicators
-Output
-The result can expose:
-```text
-Global ELA
-Local Regions
-Text Region
-Photo Region
-Metadata
-Confidence
-Evidence Count
-Suspicious Regions
-Tampering Classification
-```
-Example classification logic:
-```text
-HIGH_RISK
-REVIEW
-LOW_RISK
-NORMAL
-```
-> ⚠️ A tampering flag is a screening signal, not automatic proof of fraud. Proper deployment requires calibration against a representative labeled dataset.
----
-05 — Face Verification
-Goal
-The intended biometric comparison is:
-> **Person photo ↔ face printed on the same uploaded document**
-Not random database faces.
-Vision pipeline
-```text
-Document Image
-      │
-      ▼
-   YuNet Face Detection
-      │
-      ▼
-Printed Document Face
-      │
-      └──────────────┐
-                     │
-Person Photo        │
-      │              │
-      ▼              │
-YuNet Face Detection │
-      │              │
-      ▼              │
-Primary Face Crop ───┘
-          │
-          ▼
-       SFace
-          │
-          ▼
-Cosine Similarity
-          │
-          ▼
-MATCH / PARTIAL / MISMATCH
-```
-Robustness work included in the prototype
-Camera capture
-Uploaded person photo fallback
-Blue face-guide UI
-Tighter central camera crop
-Document-face detection
-Person-face detection
-Centered primary-person-face selection
-Multiple-background-face handling
-SFace feature comparison
-Similarity score
-Face-result contribution to risk
----
-🧠 Structured Risk Engine
-The risk engine is designed to combine multiple signals rather than letting one detector alone decide the final outcome.
-Main contributors
-```text
-Document Validation
-        +
-Reference Verification
-        +
-Face Verification
-        +
-Tampering Evidence
-        +
-OCR / Field Quality
-        +
-Image Quality
-        +
-Document-specific Policy Rules
-        ↓
-   Overall Risk Score
-```
-Risk bands used by the structured engine
-Score	Category	Example decision
-80–100	🔴 CRITICAL	REJECT / ESCALATE
-60–79	🟠 HIGH	MANUAL REVIEW
-35–59	🟡 MEDIUM	MANUAL REVIEW
-20–34	🔵 LOW-RISK REVIEW	SECONDARY CHECK
-0–19	🟢 LOW	PASS / CLEAR
-Explainability
-A screening result is intended to include the underlying factors instead of only showing:
-```text
-Risk = 67
-```
-It can instead explain:
-```text
-Risk Score: 67
-Level: HIGH
-
-Reasons:
-• Validation concern
-• Face mismatch contribution
-• Suspicious local image regions
-• Reference record mismatch
-```
-> Some demo-specific rules may intentionally raise the risk level for a scenario. Such rules are business / operational policies, not standalone evidence of fraud.
----
-🔐 Officer Authentication & Security
-The project uses an outer authentication layer around the existing screening functionality.
-Authentication flow
-```mermaid
-sequenceDiagram
-    actor O as Officer
-    participant UI as React Login
-    participant API as FastAPI
-    participant DB as MongoDB
-
-    O->>UI: Enter username + password
-    UI->>API: POST /auth/login
-    API->>DB: Find active officer
-    API->>API: Verify password hash
-    API->>DB: Create session
-    API-->>UI: Authenticated session/token
-    UI-->>O: Open secure screening console
-
-    O->>API: Protected screening request
-    API->>DB: Validate session
-    API-->>O: Screening result
-```
-Security controls implemented
-Pre-created officer accounts
-PBKDF2-HMAC-SHA256 password hashing
-Current implementation uses 310,000 PBKDF2 iterations
-Auth session storage in MongoDB
-Session TTL support
-Protected screening APIs
-Logout
-Officer-linked screening records
-Login success/failure audit events
-Screening completion audit events
-Upload type/size validation
-Filename sanitization
-Malicious/decompression-bomb protection
-MIME / actual-format checks
-Public endpoints
-```text
-GET  /
-GET  /health
-POST /auth/login
-```
-Protected endpoints
-```text
-GET  /auth/me
-POST /auth/logout
-POST /upload
-GET  /history
-GET  /analytics
-GET  /reports
-GET  /audit-logs
-```
----
-🗄️ MongoDB Architecture
-Database:
-```text
-veriguard
-```
-Collections:
+Robust median / MAD outliers
+Text-region inconsistency
+Photo-region comparison against surrounding image texture
+Metadata / editing-software indicators
+Image-quality checks
+Outputs can include component scores, suspicious regions, evidence count, confidence and an overall integrity classification.
+> A tampering flag is a screening signal, not proof of fraud. Real deployment needs calibration on a representative labeled corpus.
+04 — Face verification
+The prototype uses YuNet for face detection and SFace for face features and similarity.
+The intended comparison is deliberately narrow:
+> **Captured / uploaded person photo ↔ face printed on the same uploaded document.**
+The browser camera UI uses a blue guide and tighter central capture. The backend selects the primary person face before recognition so incidental background faces do not become the main comparison target.
+Typical outcomes: `MATCH`, `PARTIAL`, `MISMATCH`, `NO_FACE` and quality/detection review states.
+05 — Risk assessment
+The structured engine combines document validation, reference verification, face verification, tampering evidence, image quality and OCR/field quality with document-specific policy hooks.
+Score	Level	Typical decision
+80–100	CRITICAL	REJECT / ESCALATE
+60–79	HIGH	MANUAL REVIEW
+35–59	MEDIUM	MANUAL REVIEW
+20–34	LOW-RISK REVIEW	SECONDARY CHECK
+0–19	LOW	PASS / CLEAR
+Demo-specific policy rules can intentionally raise attention levels for particular screening scenarios. Those rules are decision-support policies, not automatic proof of fraud.
+👤 Officer authentication & security
+<img src="docs/assets/workflow.svg" alt="Officer workflow and audit path" width="100%"/>
+The prototype includes pre-created officer accounts, PBKDF2-HMAC-SHA256 password hashing, 310,000 PBKDF2 iterations in the current implementation, MongoDB session records, session TTL support, protected screening/history/analytics/reports/audit APIs, logout, audit events, officer-linked case records and upload hardening.
+Public vs protected API surface
+Endpoint	Access
+`GET /`	Public health/info
+`GET /health`	Public health check
+`POST /auth/login`	Public login
+`GET /auth/me`	Authenticated
+`POST /auth/logout`	Authenticated
+`POST /upload`	Authenticated
+`GET /history`	Authenticated
+`GET /analytics`	Authenticated
+`GET /reports`	Authenticated
+`GET /audit-logs`	Authenticated
+🗄️ MongoDB data model
 ```text
 veriguard
 ├── reference_passports
@@ -405,97 +108,31 @@ veriguard
 ├── audit_logs
 └── case_counters
 ```
-What each collection stores
-Collection	Purpose
-`reference_passports`	Synthetic passport reference records
-`screening_cases`	Complete case-level screening results
-`dataset_metadata`	Imported dataset metadata
-`officers`	Pre-created officer accounts and profile data
-`auth_sessions`	Authenticated sessions with expiry
-`audit_logs`	Security + screening events
-`case_counters`	Atomic case-ID generation
-Case ID design
-Example:
+MongoDB suits the prototype because screening evidence is naturally document-shaped: extracted OCR fields, validation findings, tampering evidence, face results, risk factors, officer metadata and audit information can vary by document type.
+Case IDs can be generated atomically with patterns such as:
 ```text
 VG-20260911-000001
 VG-20260911-000002
 VG-20260911-000003
 ```
-The counter-based generation is designed to keep case IDs unique and officer-friendly.
----
-📚 Reference Dataset
-The prototype uses:
-Hugging Face dataset: `ud-synthetic/indian-passports`
-Source:
+📚 Reference dataset
+The prototype uses the Hugging Face `ud-synthetic/indian-passports` dataset as synthetic passport reference data:
 https://huggingface.co/datasets/ud-synthetic/indian-passports
-The prototype importer currently works with the available synthetic passport records.
-Important data note
-The dataset is synthetic / fictional and must not be presented as a real-person biometric or identity database.
----
-🖥️ Prototype UI
-The prototype is designed as an officer-first security console.
-Main screens
-```text
-┌──────────────────────────────────────────────────────┐
-│ 🛡️ VERIGUARD                                         │
-├───────────────┬──────────────────────────────────────┤
-│ Dashboard     │                                      │
-│ Screening     │        Security Operations Console   │
-│ History       │                                      │
-│ Analytics     │        Upload → Analyze → Review     │
-│ Reports       │                                      │
-│ Settings      │                                      │
-│ Audit Trail   │                                      │
-└───────────────┴──────────────────────────────────────┘
-```
-Screening result concept
-```text
-┌─────────────────────────────────────────────────────┐
-│ DOCUMENT RESULT                                     │
-├─────────────────────────────────────────────────────┤
-│ Document Type     Student ID                         │
-│ Full Name         Shivam Singh                       │
-│ DOB               17 Nov, 2004                      │
-│ Document ID       24AI0321                          │
-│ Validity          2024–2027                         │
-│ Validation        VALID                             │
-│                                                     │
-│ FACE VERIFICATION                                   │
-│ MATCH                 Similarity 75.7/100           │
-│ Document Face         DETECTED                       │
-│ Person Face           DETECTED                       │
-│                                                     │
-│ RISK SCORE                    35 / 100              │
-│                                                     │
-│ OCR            ✅ COMPLETED                         │
-│ Validation     ✅ VALID                             │
-│ ELA            ◐ REVIEW                             │
-│ Metadata       ◐ LIMITED                            │
-└─────────────────────────────────────────────────────┘
-```
-> The exact displayed values depend on the uploaded document and test scenario.
----
-🧰 Technology Stack
-Layer	Technology	Purpose
-Frontend	React	Officer-facing web application
-Tooling	Vite	Fast frontend development / bundling
-Styling	CSS	Dark/light security-console UI
-Backend	FastAPI	REST APIs + screening orchestration
-Language	Python	Backend + AI pipeline
-OCR	Tesseract / pytesseract	Text extraction
-Image processing	OpenCV	Image analysis
-Face detection	YuNet	Face detection
-Face recognition	SFace	Feature extraction + similarity
-Numerical processing	NumPy	Image/score calculations
-Database	MongoDB	Cases, auth, references, audit
-Python DB driver	PyMongo	MongoDB integration
-Config	python-dotenv	Environment configuration
-Dataset tooling	Hugging Face datasets / hub	Reference dataset import
-API server	Uvicorn	FastAPI serving
-Password security	PBKDF2-HMAC-SHA256	Password hashing
----
-📁 Project Structure
-Recommended runtime structure:
+This dataset is synthetic / fictional and should not be described as a real-person biometric or identity database.
+🖥️ Prototype screens
+Dashboard
+<img src="docs/assets/screenshots/dashboard.png" alt="VERIGUARD dashboard" width="100%"/>
+Document screening
+<img src="docs/assets/screenshots/document-screening.png" alt="VERIGUARD document screening" width="100%"/>
+Live face verification
+<img src="docs/assets/screenshots/live-face-verification.png" alt="VERIGUARD live face verification" width="100%"/>
+Person photo workflow
+<img src="docs/assets/screenshots/person-photo.png" alt="VERIGUARD person photo workflow" width="100%"/>
+Screening result and risk assessment
+<img src="docs/assets/screenshots/screening-result.png" alt="VERIGUARD screening result" width="100%"/>
+Quick showcase
+<img src="docs/assets/screenshots/prototype-showcase.jpg" alt="VERIGUARD prototype showcase" width="100%"/>
+📁 Recommended project structure
 ```text
 fake-document-screening/
 │
@@ -515,7 +152,6 @@ fake-document-screening/
 │   │   └── App.css
 │   ├── public/
 │   ├── package.json
-│   ├── package-lock.json
 │   ├── index.html
 │   └── vite.config.js
 │
@@ -523,405 +159,173 @@ fake-document-screening/
 ├── package-lock.json
 └── README.md
 ```
-Important
-Development caches / environments should stay ignored:
+> Local development backups may exist. They are not part of the runtime architecture.
+🧰 Tech stack
+Layer	Technology	Purpose
+UI	React	Officer-facing web console
+Build tooling	Vite	Frontend development / bundling
+Styling	CSS	Security-operations interface + themes
+API	FastAPI	Backend API and orchestration
+Server	Uvicorn	ASGI server
+OCR	Tesseract / pytesseract	Text extraction
+Image processing	Pillow	Image IO, EXIF and image statistics
+Computer vision	OpenCV	Image analysis + face stack
+Face detection	YuNet	Face localization
+Face recognition	SFace	Feature extraction + similarity
+Database	MongoDB / PyMongo	Cases, reference data, officers, sessions, audit
+Security	PBKDF2-HMAC-SHA256	Officer password hashing
+Client capture	Browser MediaDevices API	Live photo capture
+Dataset	Hugging Face synthetic passport data	Reference/demo records
+⚙️ Local setup
+Prerequisites
+Python 3.x
+Node.js + npm
+MongoDB Community Server / service
+Tesseract OCR
+Modern Chromium/Firefox browser for camera capture
+Default development services:
 ```text
-backend/venv/
-backend/__pycache__/
-backend/models/
-frontend/node_modules/
-frontend/dist/
-.env
-*.pyc
-*.pyo
-*.log
+Frontend → http://localhost:5173
+Backend  → http://127.0.0.1:8000
+MongoDB  → mongodb://localhost:27017
 ```
----
-🚀 Local Setup
-1. Clone the repository
+Backend
 ```bash
-git clone https://github.com/prakhar2865/MARK-01.git
-cd MARK-01
-```
-Or open the existing project directly.
----
-2. Backend
-```bash
-cd backend
-python -m venv venv
+cd ~/fake-document-screening/backend
 source venv/Scripts/activate
+python -m py_compile main.py
+python -m uvicorn main:app --reload
 ```
-On Windows Git Bash:
+Frontend
 ```bash
-source venv/Scripts/activate
-```
-Install packages:
-```bash
-pip install fastapi uvicorn python-multipart
-pip install pytesseract pillow
-pip install opencv-contrib-python==4.10.0.84
-pip install numpy
-pip install pymongo dnspython
-pip install python-dotenv
-pip install datasets requests huggingface_hub
-```
-Run:
-```bash
-uvicorn main:app --reload
-```
-Backend:
-```text
-http://127.0.0.1:8000
-```
----
-3. Frontend
-Open another terminal:
-```bash
-cd frontend
+cd ~/fake-document-screening/frontend
 npm install
 npm run dev
 ```
-Open the Vite URL shown in the terminal.
----
-🗃️ MongoDB Setup
-Default local MongoDB connection:
+Tesseract on Windows
+Current development path:
 ```text
-mongodb://localhost:27017
+C:\Program Files\Tesseract-OCR\tesseract.exe
 ```
-Database:
+Update the backend path if Tesseract is installed elsewhere.
+Officer seeding
+```bash
+cd ~/fake-document-screening/backend
+source venv/Scripts/activate
+python seed_officer.py
+```
+Use the prompted officer details and password. Never commit real credentials.
+🧪 Prototype demo scenarios
+Scenario	Expected story
+Clean Student ID + matching face	OCR succeeds, document validates, face matches, low-risk / clear path
+Driving Licence + verification photo	Face/document checks run and attention can be raised by policy
+Expired document	Date rules contribute to validation and risk
+Tampered document	Integrity engine surfaces abnormal regions / metadata indicators
+Wrong person photo	Face similarity drops and risk can increase
+Passport reference mismatch	MongoDB reference lookup adds mismatch evidence
+Invalid login	Access is denied and authentication activity can be logged
+Face-test rule
 ```text
-veriguard
+Captured / uploaded person face
+                ↕
+Printed face on the SAME uploaded document
 ```
-Make sure MongoDB service is running before starting the backend.
-Expected health response:
-```json
-{
-  "status": "healthy",
-  "mongodb": "connected",
-  "screening_cases": 10
-}
-```
-The exact case count will naturally differ on another machine.
----
-👮 Officer Seed / Login
-Officer credentials are intended to exist in MongoDB before normal use.
-The seed helper is:
+📊 Risk engine philosophy
+The risk engine is designed to help an officer prioritize attention, not replace human verification. A production system should add labeled genuine/forged datasets, document-type calibration, false-positive/false-negative evaluation, ROC/PR analysis for face verification, image-quality benchmarks, adversarial testing and independent security review.
+🔐 Security design notes
+Implemented in the prototype
+Password hashing
+Authenticated sessions
+Protected APIs
+Session TTL support
+Audit logging
+Upload size/type/content checks
+Filename sanitization
+Image parsing safeguards
+MongoDB indexes for core queries
+Sanitized case responses that avoid leaking sensitive token/password fields
+Recommended production hardening
+Rate limiting
+HTTPS everywhere
+Strong secret management / vault
+Key rotation
+Reverse proxy / WAF
+Fine-grained RBAC
+Security-event alerting
+Backup / retention enforcement
+Model provenance and version pinning
+Formal penetration testing
+⛓️ Blockchain-ready extension — proposed
+The meaningful place for blockchain is the integrity layer, not storing raw identity documents. A future extension could anchor a cryptographic proof such as:
 ```text
-backend/seed_officer.py
+SHA-256(document) + screening_result_hash + case_id + timestamp
 ```
-The design uses:
-```text
-Officer
-  ↓
-Username + Password
-  ↓
-PBKDF2 Hash Verification
-  ↓
-Session Creation
-  ↓
-Protected Console
-```
-There is no public officer self-registration flow in the intended prototype architecture.
----
-🧪 Demo Scenarios
-For SIH presentation, prepare a small controlled scenario set.
-Scenario A — Clean / low-risk document
-Expected idea:
-```text
-OCR              ✅
-Validation       ✅ VALID
-Face             ✅ MATCH
-Tampering        NORMAL / REVIEW
-Risk             LOW
-Decision          PASS / CLEAR
-```
-Scenario B — Driving Licence + person verification
-A demo-specific policy can intentionally push attention into a higher review band.
-Example:
-```text
-Document Type      Driving Licence
-Person Photo       Supplied
-Risk               HIGH / Manual Review
-```
-This is a demo/policy rule, not a claim that every driving licence with a person photo is fraudulent.
-Scenario C — Face mismatch
-```text
-Document Face      DETECTED
-Person Face        DETECTED
-Similarity         LOW
-Face Result        MISMATCH
-Risk Contribution  HIGH
-Decision           MANUAL REVIEW / ESCALATE
-```
-Scenario D — Tampered image
-```text
-Global ELA         REVIEW
-Local Regions      SUSPICIOUS
-Text Region        SUSPICIOUS
-Photo Region       REVIEW
-Metadata           LIMITED
-Risk               ELEVATED
-Decision           MANUAL REVIEW
-```
----
-🧪 Testing Checklist
-Authentication
-[ ] Correct login
-[ ] Wrong password
-[ ] Unknown officer
-[ ] Inactive officer
-[ ] Session expiry
-[ ] Logout
-[ ] Protected endpoint without session
-OCR
-[ ] Clear document
-[ ] Low-quality document
-[ ] Different document layouts
-[ ] Name extraction
-[ ] DOB extraction
-[ ] ID extraction
-[ ] Validity extraction
-[ ] Nationality / gender extraction
-[ ] Passport / visa fields
-Validation
-[ ] Valid document
-[ ] Invalid number
-[ ] Expired document
-[ ] Future DOB
-[ ] Missing field
-[ ] Unsupported pattern
-Tampering
-[ ] Clean image
-[ ] Compression-only image
-[ ] Text edit
-[ ] Photo replacement
-[ ] Local paste
-[ ] Metadata variation
-[ ] False-positive analysis
-Face
-[ ] MATCH
-[ ] MISMATCH
-[ ] NO_FACE
-[ ] Low-light
-[ ] Blur
-[ ] Multiple background faces
-[ ] Different camera distances
-[ ] Uploaded photo fallback
-Database / E2E
-[ ] MongoDB available
-[ ] MongoDB unavailable
-[ ] Case ID uniqueness
-[ ] History entry
-[ ] Officer linked to case
-[ ] Audit entry
-[ ] Analytics response
-[ ] Report response
----
-📊 Current Implementation Status
-✅ Implemented
+on an immutable ledger while keeping detailed evidence in secure storage.
+> **Cybersecurity protects the screening system; blockchain can provide an immutable integrity/audit layer for screening evidence.**
+The current prototype does not claim to contain a production blockchain network.
+🧭 Current implementation status
+Working / integrated prototype areas
 React + Vite frontend
 FastAPI backend
 MongoDB integration
-CORS configuration
-Officer login UI
-MongoDB officer credentials
-Password hashing
-Session/token system
-Logout
-Protected APIs
-Officer profile
+Officer authentication and password hashing
+Session system and protected screening endpoints
+OCR and core field extraction
+Document validation
+MongoDB passport reference verification
+Multi-signal tampering analysis
+YuNet face detection + SFace recognition
+Person-photo capture / upload
+Structured risk assessment
+Screening history
+Analytics endpoint / dashboard data
+Reports endpoint / UI
 Audit trail
-Secure document upload
-File type / size validation
-Tesseract OCR
-Name / DOB / ID / validity extraction
-Basic document validation
-Reference passport collection
-Expiry validation
-Document-number format validation
-ELA analysis
-Metadata analysis
-Text consistency analysis
-Image-quality analysis
-Advanced multi-signal tampering pipeline
-Local-region analysis
-Text-region analysis
-Photo-region analysis
-Evidence count / findings
-YuNet + SFace face pipeline
-Camera capture
-Person-photo upload fallback
-Similarity score
-Structured risk scoring
-History
-Analytics
-Reports page
-Settings
-Dark / light theme
-Security hardening basics
-Case-ID generation
-🟡 Implemented but needs broader testing
-Passport-specific OCR fields
-Visa-specific OCR fields
-Nationality improvement
-Gender improvement
-Passport-number improvement
-Visa number / type / entry / stay validation
-YuNet/SFace robustness across many real-world conditions
-Structured Risk Engine v1 calibration
-⏳ Next engineering improvements
-Password change
-Session invalidation improvements
-Photo replacement detection calibration
-Text manipulation calibration
-Stamp / signature forgery analysis
-Better metadata detection
-Tampering heatmap
-Real tampered-document calibration
+Dark/light UI
+Upload security hardening
+Still requiring formal testing / calibration
+Passport-specific extraction across diverse layouts
+Visa-field extraction across varied visa formats
+Tampering threshold calibration on labeled data
+Stamp/signature forgery analysis
+Heatmap visualization
 False-positive testing
-Risk category testing
-Explainable risk reason testing
-Case timeline
-Audit integration refinements
-Risk analytics charts
-Individual case PDF reports
-Loading / empty / error states
-Rate limiting
-Production security configuration
-Full end-to-end and performance test suite
-SIH demo package, diagrams and presentation
----
-🛡️ Cybersecurity Design
-The system combines application security with evidence traceability.
-Application security
+Rate limiting / production session hardening
+Full load / performance testing
+Production-grade report generation
+🧪 Testing checklist
 ```text
-Password hashing
-      +
-Authenticated sessions
-      +
-Protected APIs
-      +
-Upload validation
-      +
-Filename sanitization
-      +
-Decompression-bomb protection
-      +
-MIME / format verification
-      ↓
-Secure screening application
+[ ] valid document
+[ ] expired document
+[ ] invalid document number
+[ ] missing fields
+[ ] tampered document
+[ ] clean document
+[ ] face MATCH
+[ ] face MISMATCH
+[ ] no face
+[ ] multiple background faces
+[ ] low-light / blur
+[ ] wrong password
+[ ] expired session
+[ ] bad file type
+[ ] oversized file
+[ ] malformed image
+[ ] MongoDB unavailable
+[ ] complete end-to-end officer flow
 ```
-Auditability
-```text
-Officer
-  ↓
-Login Event
-  ↓
-Screening Event
-  ↓
-Case ID
-  ↓
-Stored Evidence / Result
-  ↓
-Audit Trail
-```
----
-⛓️ Blockchain Extension — Proposed
-Current prototype does not contain a live blockchain deployment.
-A practical future design would not put the document or face image on-chain.
-Instead:
-```text
-Document / Result
-      ↓
-SHA-256 Hash
-      ↓
-Blockchain / Immutable Ledger
-```
-MongoDB continues to store the operational case.
-The chain stores only an integrity proof such as:
-```text
-Case ID
-Result Hash
-Timestamp
-Officer / System Reference
-```
-SIH-friendly explanation
-> **Cybersecurity protects the screening system, while blockchain can provide an immutable audit and integrity layer for screening evidence.**
-This keeps sensitive identity data off-chain while giving later users a way to verify whether the screening record was altered.
----
-🧭 Future Vision
-```mermaid
-flowchart LR
-    A["Prototype"] --> B["Better Calibration"]
-    B --> C["More Document Types"]
-    C --> D["Improved Tampering Models"]
-    D --> E["Liveness / Anti-Spoofing"]
-    E --> F["Stronger Analytics"]
-    F --> G["Signed PDF Reports"]
-    G --> H["Immutable Integrity Layer"]
-
-    style A fill:#0f172a,stroke:#38bdf8,color:#e2e8f0
-    style B fill:#111827,stroke:#60a5fa,color:#e2e8f0
-    style C fill:#111827,stroke:#60a5fa,color:#e2e8f0
-    style D fill:#111827,stroke:#a78bfa,color:#e2e8f0
-    style E fill:#111827,stroke:#22d3ee,color:#e2e8f0
-    style F fill:#111827,stroke:#22c55e,color:#e2e8f0
-    style G fill:#111827,stroke:#f59e0b,color:#e2e8f0
-    style H fill:#111827,stroke:#10b981,color:#e2e8f0
-```
----
-🏁 Suggested SIH Demo Flow
-Use this exact presentation sequence for a clean live demo:
-```text
-1. Officer Login
-      ↓
-2. Dashboard
-      ↓
-3. Upload a sample document
-      ↓
-4. OCR extraction
-      ↓
-5. Validation result
-      ↓
-6. Tampering / integrity signals
-      ↓
-7. Capture person face
-      ↓
-8. Face MATCH / MISMATCH
-      ↓
-9. Risk score + reasons
-      ↓
-10. Case ID
-      ↓
-11. Screening History
-      ↓
-12. Audit Trail
-```
-Best demo message
-> **“VERIGUARD does not replace an officer. It gives the officer a standardized, explainable and auditable evidence package so suspicious documents can be reviewed faster and more consistently.”**
----
-📌 Important Engineering Notes
-The system is a prototype, not a certified identity-verification product.
-AI outputs are decision-support signals and require human review in high-impact deployment.
-Synthetic passport data is used for the current reference-data demonstration.
-Real deployment requires security review, privacy controls, representative labeled datasets, legal/compliance review and threshold calibration.
-Face verification quality depends on image quality, pose, illumination, blur, occlusion and the quality of the printed document photo.
-Tampering analysis can produce false positives; calibration is mandatory before production use.
----
-🔗 Repository
-GitHub:  
-https://github.com/prakhar2865/MARK-01
-SIH Problem:  
-`SIH26188 — AI-Based Fake Identity & Document Screening System`
----
-👥 Team / Presentation
-Project: VERIGUARD  
-Domain: AI + Computer Vision + Document Security + Cybersecurity  
-Platform: Web Application  
-Target User: Security / screening officer
----
-<p align="center">
-🛡️ VERIFY. ANALYZE. ASSESS. AUDIT.
-VERIGUARD  
-AI-assisted identity and document screening for security operations.
-</p>
+🧩 Why the prototype is SIH-friendly
+VERIGUARD is presented as an operational security console, not a collection of disconnected AI demos. The evaluator story is simple:
+Authenticate → Screen → Explain → Record → Audit
+That makes the prototype easy to demonstrate while keeping the path to production hardening explicit.
+📈 Future roadmap
+Phase 1 — Accuracy: more document templates, better OCR post-processing, calibrated tampering model, face-quality gating and stronger visa parsing.
+Phase 2 — Intelligence: learned tampering classifier, better template recognition, multilingual OCR, screening-history anomaly detection and officer workload analytics.
+Phase 3 — Security at scale: RBAC, rate limiting, key management, immutable evidence ledger, secure multi-site deployment and SIEM integration.
+👥 Project positioning
+VERIGUARD is a prototype for Smart India Hackathon problem statement SIH26188. It is intended as decision-support software for trained officers and should not be presented as an autonomous legal or identity adjudication system.
+📄 License / usage note
+This README describes a hackathon prototype. Replace the license section with the team’s final repository license before public production distribution. The referenced synthetic passport dataset has its own license / terms and should be reviewed before redistribution.
+⭐ One-line pitch
+> **VERIGUARD converts identity-document screening from a manual, fragmented check into a secure, explainable and auditable AI-assisted workflow.**
+<p align="center"><br/><b>VERIGUARD — Identity Security, backed by evidence.</b></p>
